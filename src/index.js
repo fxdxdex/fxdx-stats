@@ -14,7 +14,7 @@ if (module.hot) {
   console.info('✅  Server-side HMR Enabled!');
 }
 
-const port = process.env.PORT || 3105;
+const port = 3000;
 function cb(err, port) {
   if (err) {
     console.error(err);

@@ -3,11 +3,11 @@
   "version": "4.0.5",
   "license": "MIT",
   "scripts": {
-    "build:prod": "PORT=8080 razzle build --noninteractive",
-    "build:dev": "PORT=3113 razzle build --noninteractive",
+    "build:prod": "razzle build --noninteractive",
+    "build:dev": "razzle build --noninteractive",
     "build-upload": "PORT=8080 razzle build --noninteractive && tar -zcvf build.tar.gz build && scp build.tar.gz do2:~/www/gmx-stats",
     "test": "razzle test --env=jsdom",
-    "start": "PORT=3113 razzle start",
+    "start": "razzle start",
     "start-win": "set PORT=3113&razzle start",
     "start:prod": "node build/server.js",
     "lint": "eslint $(git ls-files -m | grep -E \".js$\")",
@@ -16,6 +16,7 @@
   "dependencies": {
     "@apollo/client": "3.4.17",
     "babel-preset-razzle": "^4.0.5",
+    "bootstrap": "^5.1.3",
     "chalk": "^4.1.2",
     "classnames": "^2.3.1",
     "console-log-level": "^1.4.1",
@@ -28,6 +29,7 @@
     "framer-motion": "^4.1.17",
     "graphql": "^15.8.0",
     "html-webpack-plugin": "^4.5.2",
+    "http": "^0.0.1-security",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^0.9.0",
     "moment": "^2.29.1",
@@ -44,7 +46,7 @@
     "webpack-dev-server": "^3.11.3"
   },
   "engines": {
-    "node": "14.x",
+    "node": "16.x",
     "npm": "6.x"
   }
 }

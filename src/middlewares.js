@@ -37,12 +37,9 @@ export function csp(req, res, next) {
     ]
   }
   if (!IS_PRODUCTION) {
-    csp["default-src"].push("localhost:3114")
+    csp["default-src"].push("localhost:3001")
     csp["style-src"].push("'unsafe-inline'")
-    csp["connect-src"].push("localhost:3114", "ws://localhost:3114")
-  }
-  const cspParts = ''
-  for (const [key, value] of Object.entries(csp)) {
+    csp["connect-src"].push("localhost:3001", "ws://localhost:3001")
   }
   const cspString = Object.entries(csp).map(([key, value]) => `${key} ${value.join(' ')}`).join('; ')
   res.set("Content-Security-Policy", cspString)

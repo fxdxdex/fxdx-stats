@@ -288,14 +288,14 @@ label + input {
 }
 
 .nav-logo {
-  width: 87px;
+  width: 50px;
   vertical-align: middle;
   margin: 0px 0.5rem 0 0;
   display: inline-flex;
 }
 
 .nav-logo img {
-  width: 87px;
+  width: 50px;
 }
 
 a, a:active, a:visited {
