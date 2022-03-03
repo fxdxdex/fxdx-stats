@@ -236,10 +236,7 @@ function Bsc() {
 
   return (
     <div className="Bsc">
-      <h1>Gambit Analytics / Binance Smart Chain</h1>
-      <p style={{color: "orange", fontWeight: "bold", fontSize: 18}}>
-        Gambit on Binance Smart Chain is not operating currently. GMX operates on Arbitrum and Avalanche
-      </p>
+      <h1>Analytics / Binance Smart Chain</h1>
       <div className="form">
         <p>
           <label>Period</label>

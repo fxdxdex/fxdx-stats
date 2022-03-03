@@ -3,8 +3,7 @@ import {Route, Switch, NavLink} from 'react-router-dom';
 import {motion, AnimatePresence} from "framer-motion";
 import cx from "classnames";
 import Bsc from './Bsc';
-import Arbitrum from './Arbitrum';
-import Avalanche from './Avalanche';
+import Algorand from './Algorand';
 import Trading from './Trading';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -35,7 +34,7 @@ function AppHeaderLinks({mode, small, clickCloseIcon}) {
         <NavLink to="/" exact className="nav-link" activeClassName="active">BSC</NavLink>
       </div>
       <div className="App-header-link-container">
-        <NavLink to="/avalanche" className="nav-link">Algorand</NavLink>
+        <NavLink to="/algorand" className="nav-link">Algorand</NavLink>
       </div>
     </div>
   )
@@ -98,7 +97,7 @@ const App = () => {
                 <img src={LogoIcon} style={{filter: mode === 'dark' ? 'invert(0)' : 'invert(1)'}} className="w-100 h-100" />
               </a>
               <NavLink to="/" exact className="nav-link" activeClassName="active">BSC</NavLink>
-              <NavLink to="/avalanche" className="nav-link">Algorand</NavLink>
+              <NavLink to="/algorand" className="nav-link">Algorand</NavLink>
             </div>
             <div className="nav-right">
               <a href="https://fxdx.exchange" target="_blank" className="nav-link" rel="noreferrer">GOTO FXDX</a>
@@ -123,12 +122,9 @@ const App = () => {
             }
           </AnimatePresence>
           <div className="content">
-            <Route exact path="/" render={(props) => (
-              <Arbitrum {...props} mode={mode}/>
-            )}/>
-            <Route exact path="/bsc" component={Bsc}/>
-            <Route exact path="/avalanche" render={(props) => (
-              <Avalanche {...props} mode={mode}/>
+            <Route exact path="/" component={Bsc}/>
+            <Route exact path="/algorand" render={(props) => (
+              <Algorand {...props} mode={mode}/>
             )}/>
             <Route exact path="/trading" component={Trading}/>
           </div>
