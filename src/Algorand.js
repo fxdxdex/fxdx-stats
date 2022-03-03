@@ -157,7 +157,7 @@ function Algorand(props) {
 
   return (
     <div className="Home">
-      <h1 className="pb-3">Analytics / BSC</h1>
+      <h1 className="pb-3">Analytics / Algorand</h1>
       {lastSubgraphBlock && lastBlock &&
         <p className={cx('page-description', { warning: isObsolete })} style={{ marginTop: '-1rem' }}>
           {isObsolete && "Data is obsolete. "}
