@@ -7,3 +7,7 @@ backend:
     build:
       commands:
         - yarn build
+        - amplifyPush --simple
+frontend:
+  artifacts:
+    baseDirectory: build
