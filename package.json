@@ -2,11 +2,11 @@
   "name": "my-razzle-app",
   "version": "4.0.5",
   "license": "MIT",
+  "homepage": "http://3.20.239.202/",
+  "main": "index.js",
   "scripts": {
-    "build": "razzle build --noninteractive",
-    "test": "razzle test --env=jsdom",
-    "dev": "razzle start",
-    "start": "razzle start",
+    "build": "react-scripts build",
+    "start": "react-scripts start",
     "pre-commit": "npm run lint"
   },
   "dependencies": {
@@ -31,15 +31,27 @@
     "moment": "^2.29.1",
     "object-sizeof": "^1.6.1",
     "path": "^0.12.7",
-    "razzle": "^4.2.14",
     "razzle-dev-utils": "^4.2.14",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^5.3.0",
+    "react-scripts": "^5.0.0",
     "recharts": "^2.1.9",
     "strftime": "^0.10.1",
     "webpack": "^4.46.0",
     "webpack-dev-server": "^3.11.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

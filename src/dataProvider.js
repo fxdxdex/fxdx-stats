@@ -368,7 +368,7 @@ export function useLastSubgraphBlock(chainName = "arbitrum") {
 }
 
 export function useTradersData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum" } = {}) {
-  const [closedPositionsData, loading, error] = useGraph(`{
+  const [closedPositionsData, loading] = useGraph(`{
     tradingStats(
       first: 1000
       orderBy: timestamp
