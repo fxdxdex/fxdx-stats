@@ -3,13 +3,10 @@
   "version": "4.0.5",
   "license": "MIT",
   "scripts": {
-    "build:prod": "razzle build --noninteractive",
-    "build:dev": "razzle build --noninteractive",
-    "build-upload": "PORT=8080 razzle build --noninteractive && tar -zcvf build.tar.gz build && scp build.tar.gz do2:~/www/gmx-stats",
+    "build": "razzle build --noninteractive",
     "test": "razzle test --env=jsdom",
-    "start": "razzle start",
-    "start-win": "set PORT=3113&razzle start",
-    "start:prod": "node build/server.js",
+    "dev": "razzle start",
+    "start": "node build/server.js",
     "lint": "eslint $(git ls-files -m | grep -E \".js$\")",
     "pre-commit": "npm run lint"
   },
