@@ -1,13 +1,16 @@
 version: 1
-backend:
+frontend:
   phases:
     preBuild:
       commands:
         - yarn install
     build:
       commands:
-        - yarn build
-        - amplifyPush --simple
-frontend:
+        - yarn run build
   artifacts:
     baseDirectory: build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
