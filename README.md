@@ -251,3 +251,6 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 
 # Trouble Shootings
 - [](https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported)
+- export NODE_OPTIONS=--openssl-legacy-provider
+- export NODE_OPTIONS=--max_old_space_size=8192
+- export NODE_OPTIONS="--max_old_space_size=4096 --openssl-legacy-provider"
