@@ -13,7 +13,8 @@ import { addresses, ARBITRUM, AVALANCHE } from './addresses'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
-
+console.log("RAZZLE_ASSETS_MANIFEST", process.env.RAZZLE_ASSETS_MANIFEST)
+console.log("assets", assets)
 const cssLinksFromAssets = (assets, entrypoint) => {
   return assets[entrypoint] ? assets[entrypoint].css ?
   assets[entrypoint].css.map(asset=>
