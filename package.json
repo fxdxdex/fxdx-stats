@@ -7,7 +7,6 @@
     "test": "razzle test --env=jsdom",
     "dev": "razzle start",
     "start": "razzle start",
-    "lint": "eslint $(git ls-files -m | grep -E \".js$\")",
     "pre-commit": "npm run lint"
   },
   "dependencies": {
