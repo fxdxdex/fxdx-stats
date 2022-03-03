@@ -4,35 +4,21 @@ import {
   BarChart,
   Line,
   Bar,
-  Label,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  LabelList,
-  ReferenceLine,
-  Area,
-  AreaChart,
   ComposedChart,
-  Cell,
-  PieChart,
-  Pie
 } from 'recharts';
 
 import {
-  yaxisFormatterNumber,
-  yaxisFormatterPercent,
   yaxisFormatter,
   tooltipLabelFormatter as tooltipLabelFormatter_,
   tooltipFormatter as tooltipFormatter_,
-  tooltipFormatterNumber,
-  tooltipFormatterPercent,
   CHART_HEIGHT,
-  YAXIS_WIDTH,
   COLORS,
-  COINCOLORS
 } from '../helpers'
 
 import ChartWrapper from './ChartWrapper'
@@ -44,7 +30,6 @@ export default function GenericChart(props) {
     data,
     description,
     height = CHART_HEIGHT,
-    yaxisWidth = YAXIS_WIDTH,
     yaxisDataKey = 'all',
     yaxisTickFormatter = yaxisFormatter,
     yaxisDomain,
@@ -57,7 +42,6 @@ export default function GenericChart(props) {
     syncId,
     children,
     rightYaxisDataKey,
-    isCoinChart
   } = props
 
   let ChartComponent
@@ -68,10 +52,6 @@ export default function GenericChart(props) {
   } else {
     ChartComponent = ComposedChart
   }
-
-  // Previous update
-  // fill: item.color || (isCoinChart ? COINCOLORS[i % COINCOLORS.length] : COLORS[i % COLORS.length]),
-  // stroke: item.color || (isCoinChart ? COINCOLORS[i % COINCOLORS.length] : COLORS[i % COLORS.length]),
 
   const htmlItems = (items || []).map((item, i) => {
     const props = {

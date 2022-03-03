@@ -53,5 +53,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "rules": {
+      "jsx-a11y/anchor-is-valid": "off"
+    }
+  },
+  "devDependencies": {
+    "eslint-plugin-disable": "^2.0.3"
   }
 }
