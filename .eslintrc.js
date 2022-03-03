@@ -1,6 +1,4 @@
 module.exports = {
-    "plugins": ["disable"],
-    "processor": "disable/disable",
     "env": {
         "browser": true,
         "node": true,
@@ -17,11 +15,9 @@ module.exports = {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    // "plugins": [
-    //     "react"
-    // ],
-    "rules": {
-    },
+    "plugins": [
+        "react"
+    ],
     "settings": {
         "react": {
             "version": "detect"

@@ -15,12 +15,15 @@ function getCsvUrl(data, fields) {
   return `data:application/octet-stream,${encodeURIComponent(csv)}`
 }
 
+// eslint-disable-next-line react/prop-types
 export default function CsvLink({ data, fields, name = 'GMX stats' }) {
   const onClick = useCallback((evt) => {
     evt.preventDefault()
 
     const csvUrl = getCsvUrl(data, fields)
+    // eslint-disable-next-line react/prop-types
     const start = formatTimestamp(data[0].timestamp)
+    // eslint-disable-next-line react/prop-types
     const end = formatTimestamp(data[data.length - 1].timestamp)
     const fileName = `${name}_${start}_${end}.csv`
 
@@ -32,12 +35,15 @@ export default function CsvLink({ data, fields, name = 'GMX stats' }) {
     document.body.removeChild(aElement)
   }, [data, fields, name])
 
+  // eslint-disable-next-line react/prop-types
   if (!data || data.length === 0 || !fields) {
     return null
   }
 
   return (
+    // eslint-disable-next-line react/react-in-jsx-scope
     <a title="Download CSV" className="csv-link" onClick={onClick}>
+      {/* eslint-disable-next-line react/react-in-jsx-scope */}
       <RiDownload2Fill size="1em" />
     </a>
   )

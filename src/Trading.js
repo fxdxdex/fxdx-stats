@@ -1,31 +1,20 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import * as ethers from 'ethers'
-import * as strftime from 'strftime'
+import React, { useState, useMemo } from 'react';
 
 import { urlWithParams, tsToIso } from './helpers'
 import { useRequest } from './dataProvider'
 
 import {
   LineChart,
-  BarChart,
   Line,
-  Bar,
-  Label,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  LabelList,
-  ReferenceLine,
   Area,
-  AreaChart,
   ComposedChart
 } from 'recharts';
-
-const { BigNumber } = ethers
-const { formatUnits} = ethers.utils
 
 // function fillTicks(dataset, { from, to, interval }) {
 //  let i = 0
@@ -280,6 +269,7 @@ function Trading() {
           <Tooltip />
           <Legend />
           {swapSourcesFilteredKeys.map((key, i) => {
+            // eslint-disable-next-line react/jsx-key
             return <Line dataKey={key} dot={false} stroke={COLORS[i % COLORS.length]} />
           })}
         </LineChart>

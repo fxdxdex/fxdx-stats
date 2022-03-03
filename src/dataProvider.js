@@ -1,21 +1,21 @@
-import { useMemo, useState, useEffect } from 'react'
-import { ApolloClient, InMemoryCache, gql, HttpLink } from '@apollo/client'
-import { chain, sumBy, sortBy, maxBy, minBy } from 'lodash'
+import {useMemo, useState, useEffect} from 'react'
+import {ApolloClient, InMemoryCache, gql, HttpLink} from '@apollo/client'
+import {chain, sumBy, sortBy, maxBy, minBy} from 'lodash'
 import fetch from 'cross-fetch';
 import * as ethers from 'ethers'
 
-import { fillPeriods } from './helpers'
+import {fillPeriods} from './helpers'
 
-const BigNumber = ethers.BigNumber
-const formatUnits = ethers.utils.formatUnits
-const { JsonRpcProvider } = ethers.providers
+// const BigNumber = ethers.BigNumber
+// const formatUnits = ethers.utils.formatUnits
+const {JsonRpcProvider} = ethers.providers
 
 const providers = {
   arbitrum: new JsonRpcProvider('https://arb1.arbitrum.io/rpc'),
   avalanche: new JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc')
 }
 
-const DEFAULT_GROUP_PERIOD = 86400
+// const DEFAULT_GROUP_PERIOD = 86400
 const NOW_TS = parseInt(Date.now() / 1000)
 const FIRST_DATE_TS = parseInt(+(new Date(2021, 7, 31)) / 1000)
 
@@ -68,6 +68,7 @@ export const tokenSymbols = {
   '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e': 'USDC'
 }
 
+// eslint-disable-next-line no-unused-vars
 function getTokenDecimals(token) {
   return tokenDecimals[token] || 18
 }
@@ -89,10 +90,11 @@ const knownSwapSources = {
 }
 
 const defaultFetcher = url => fetch(url).then(res => res.json())
+
 export function useRequest(url, defaultValue, fetcher = defaultFetcher) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState()
-  const [data, setData] = useState(defaultValue) 
+  const [data, setData] = useState(defaultValue)
 
   useEffect(async () => {
     try {
@@ -109,7 +111,7 @@ export function useRequest(url, defaultValue, fetcher = defaultFetcher) {
   return [data, loading, error]
 }
 
-export function useCoingeckoPrices(symbol, { from = FIRST_DATE_TS } = {}) {
+export function useCoingeckoPrices(symbol, {from = FIRST_DATE_TS} = {}) {
   // token ids https://api.coingecko.com/api/v3/coins
   const _symbol = {
     BTC: 'bitcoin',
@@ -149,13 +151,13 @@ export function useCoingeckoPrices(symbol, { from = FIRST_DATE_TS } = {}) {
 
 function getImpermanentLoss(change) {
   return 2 * Math.sqrt(change) / (1 + change) - 1
-} 
+}
 
 function getChainSubgraph(chainName) {
   return chainName === "arbitrum" ? "gmx-io/gmx-stats" : "gmx-io/gmx-avalanche-stats"
 }
 
-export function useGraph(querySource, { subgraph = null, subgraphUrl = null, chainName = "arbitrum" } = {}) {
+export function useGraph(querySource, {subgraph = null, subgraphUrl = null, chainName = "arbitrum"} = {}) {
   const query = gql(querySource)
 
   if (!subgraphUrl) {
@@ -166,7 +168,7 @@ export function useGraph(querySource, { subgraph = null, subgraphUrl = null, cha
   }
 
   const client = new ApolloClient({
-    link: new HttpLink({ uri: subgraphUrl, fetch }),
+    link: new HttpLink({uri: subgraphUrl, fetch}),
     cache: new InMemoryCache()
   })
   const [data, setData] = useState()
@@ -191,8 +193,8 @@ export function useGraph(querySource, { subgraph = null, subgraphUrl = null, cha
   return [data, loading, error]
 }
 
-export function useGambitVolumeData({ from, to }) {
-  const [graphData, loading, error] = useGraph(`{
+export function useGambitVolumeData({from, to}) {
+  const [graphData, loading] = useGraph(`{
     volumeStats(
       first: 1000,
       where: { id_gte: ${from}, id_lte: ${to}, period: daily }
@@ -212,7 +214,7 @@ export function useGambitVolumeData({ from, to }) {
 
   let data
   if (graphData) {
-    data = sortBy(graphData.volumeStats, item => item.id).map(({ id, margin, swap, liquidation, mint, burn }) => {
+    data = sortBy(graphData.volumeStats, item => item.id).map(({id, margin, swap, liquidation, mint, burn}) => {
       margin = margin / 1e30
       swap = swap / 1e30
       liquidation = liquidation / 1e30
@@ -234,8 +236,8 @@ export function useGambitVolumeData({ from, to }) {
   return [data, loading]
 }
 
-export function useGambitFeesData({ from, to }) {
-  const [graphData, loading, error] = useGraph(`{
+export function useGambitFeesData({from, to}) {
+  const [graphData, loading] = useGraph(`{
     feeStats(
       first: 1000,
       where: { id_gte: ${from}, id_lte: ${to}, period: daily }
@@ -259,7 +261,7 @@ export function useGambitFeesData({ from, to }) {
 
   let data
   if (graphData) {
-    data = sortBy(graphData.feeStats, item => item.id).map(({ id, margin, swap, mint, burn }) => {
+    data = sortBy(graphData.feeStats, item => item.id).map(({id, margin, swap, mint, burn}) => {
       margin = margin / 1e30
       swap = swap / 1e30
       const liquidation = 0
@@ -281,7 +283,7 @@ export function useGambitFeesData({ from, to }) {
   return [data, loading]
 }
 
-export function useGambitPoolStats({ from, to, groupPeriod }) {
+export function useGambitPoolStats({from, to, groupPeriod}) {
   const [data, loading, error] = useGraph(`{
     poolStats (
       first: 1000,
@@ -298,12 +300,12 @@ export function useGambitPoolStats({ from, to, groupPeriod }) {
       USDT_usd,
       BUSD_usd
     }
-  }`, { subgraph: 'gkrasulya/gambit' })
+  }`, {subgraph: 'gkrasulya/gambit'})
 
   const ret = useMemo(() => {
     if (!data) {
-       return null
-    } 
+      return null
+    }
     let ret = data.poolStats.map(item => {
       return Object.entries(item).reduce((memo, [key, value]) => {
         if (key === 'id') memo.timestamp = value
@@ -324,7 +326,7 @@ export function useGambitPoolStats({ from, to, groupPeriod }) {
       })
       .value()
 
-     return fillPeriods(ret, { period: groupPeriod, from, to, interpolate: false, extrapolate: true })
+    return fillPeriods(ret, {period: groupPeriod, from, to, interpolate: false, extrapolate: true})
   }, [data])
 
   return [ret, loading, error]
@@ -351,13 +353,13 @@ export function useLastSubgraphBlock(chainName = "arbitrum") {
         number
       }
     } 
-  }`, { chainName })
+  }`, {chainName})
   const [block, setBlock] = useState(null)
 
   useEffect(() => {
     if (!data) {
       return
-    } 
+    }
 
     providers[chainName].getBlock(data._meta.block.number).then(block => {
       setBlock(block)
@@ -367,7 +369,7 @@ export function useLastSubgraphBlock(chainName = "arbitrum") {
   return [block, loading, error]
 }
 
-export function useTradersData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum" } = {}) {
+export function useTradersData({from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum"} = {}) {
   const [closedPositionsData, loading] = useGraph(`{
     tradingStats(
       first: 1000
@@ -383,15 +385,16 @@ export function useTradersData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = 
       longOpenInterest
       shortOpenInterest
     }
-  }`, { chainName })
-  const [feesData] = useFeesData({ from, to, chainName })
+  }`, {chainName})
+  const [feesData] = useFeesData({from, to, chainName})
+  // eslint-disable-next-line no-unused-vars
   const marginFeesByTs = useMemo(() => {
     if (!feesData) {
       return {}
     }
 
     let feesCumulative = 0
-    return feesData.reduce((memo, { timestamp, margin: fees}) => {
+    return feesData.reduce((memo, {timestamp, margin: fees}) => {
       feesCumulative += fees
       memo[timestamp] = {
         fees,
@@ -407,8 +410,8 @@ export function useTradersData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = 
     const shortOpenInterest = dataItem.shortOpenInterest / 1e30
     const openInterest = longOpenInterest + shortOpenInterest
 
-    const fees = (marginFeesByTs[dataItem.timestamp]?.fees || 0)
-    const feesCumulative = (marginFeesByTs[dataItem.timestamp]?.feesCumulative || 0)
+    // const fees = (marginFeesByTs[dataItem.timestamp]?.fees || 0)
+    // const feesCumulative = (marginFeesByTs[dataItem.timestamp]?.feesCumulative || 0)
 
     const profit = dataItem.profit / 1e30
     const loss = dataItem.loss / 1e30
@@ -482,7 +485,8 @@ function getSwapSourcesFragment(skip = 0, from, to) {
     }
   `
 }
-export function useSwapSources({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum" } = {}) {
+
+export function useSwapSources({from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum"} = {}) {
   const query = `{
     a: ${getSwapSourcesFragment(0, from, to)}
     b: ${getSwapSourcesFragment(1000, from, to)}
@@ -490,9 +494,9 @@ export function useSwapSources({ from = FIRST_DATE_TS, to = NOW_TS, chainName = 
     d: ${getSwapSourcesFragment(3000, from, to)}
     e: ${getSwapSourcesFragment(4000, from, to)}
   }`
-  const [graphData, loading, error] = useGraph(query, { chainName })
+  const [graphData, loading, error] = useGraph(query, {chainName})
 
-  let total = 0
+  // let total = 0
   let data = useMemo(() => {
     if (!graphData) {
       return null
@@ -515,7 +519,7 @@ export function useSwapSources({ from = FIRST_DATE_TS, to = NOW_TS, chainName = 
             }
             return memo
           }, {})
-        } 
+        }
 
         retItem.all = all
 
@@ -552,11 +556,12 @@ function getServerHostname(chainName) {
   return 'gmx-server-mainnet.uw.r.appspot.com'
 }
 
-export function useVolumeDataFromServer({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum" } = {}) {
+export function useVolumeDataFromServer({from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum"} = {}) {
   const PROPS = 'margin liquidation swap mint burn'.split(' ')
   const [data, loading] = useRequest(`https://${getServerHostname(chainName)}/daily_volume`, null, async url => {
     let after
     const ret = []
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const res = await (await fetch(url + (after ? `?after=${after}` : ''))).json()
       if (res.length === 0) return ret
@@ -571,34 +576,34 @@ export function useVolumeDataFromServer({ from = FIRST_DATE_TS, to = NOW_TS, cha
   })
 
   const ret = useMemo(() => {
-     if (!data) {
-       return null
-     } 
+    if (!data) {
+      return null
+    }
 
-     const tmp = data.reduce((memo, item) => {
-        const timestamp = item.data.timestamp
-        if (timestamp < from || timestamp > to) {
-          return memo
-        }
-
-        let type
-        if (item.data.action === 'Swap') {
-          type = 'swap'
-        } else if (item.data.action === 'SellUSDG') {
-          type = 'burn'
-        } else if (item.data.action === 'BuyUSDG') {
-          type = 'mint'
-        } else if (item.data.action.includes('LiquidatePosition')) {
-          type = 'liquidation'
-        } else {
-          type = 'margin'
-        }
-        const volume = Number(item.data.volume) / 1e30
-        memo[timestamp] = memo[timestamp] || {}
-        memo[timestamp][type] = memo[timestamp][type] || 0
-        memo[timestamp][type] += volume
+    const tmp = data.reduce((memo, item) => {
+      const timestamp = item.data.timestamp
+      if (timestamp < from || timestamp > to) {
         return memo
-     }, {})
+      }
+
+      let type
+      if (item.data.action === 'Swap') {
+        type = 'swap'
+      } else if (item.data.action === 'SellUSDG') {
+        type = 'burn'
+      } else if (item.data.action === 'BuyUSDG') {
+        type = 'mint'
+      } else if (item.data.action.includes('LiquidatePosition')) {
+        type = 'liquidation'
+      } else {
+        type = 'margin'
+      }
+      const volume = Number(item.data.volume) / 1e30
+      memo[timestamp] = memo[timestamp] || {}
+      memo[timestamp][type] = memo[timestamp][type] || 0
+      memo[timestamp][type] += volume
+      return memo
+    }, {})
 
     let cumulative = 0
     const cumulativeByTs = {}
@@ -630,7 +635,7 @@ export function useVolumeDataFromServer({ from = FIRST_DATE_TS, to = NOW_TS, cha
   return [ret, loading]
 }
 
-export function useUsersData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum" } = {}) {
+export function useUsersData({from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum"} = {}) {
   const query = `{
     userStats(
       first: 1000
@@ -653,7 +658,7 @@ export function useUsersData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "a
       timestamp
     }
   }`
-  const [graphData, loading, error] = useGraph(query, { chainName })
+  const [graphData, loading, error] = useGraph(query, {chainName})
 
   const prevUniqueCountCumulative = {}
   const data = graphData ? sortBy(graphData.userStats, 'timestamp').map(item => {
@@ -679,7 +684,7 @@ export function useUsersData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "a
   return [data, loading, error]
 }
 
-export function useFundingRateData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum" } = {}) {
+export function useFundingRateData({from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum"} = {}) {
   const query = `{
     fundingRates(
       first: 1000,
@@ -696,7 +701,7 @@ export function useFundingRateData({ from = FIRST_DATE_TS, to = NOW_TS, chainNam
       endTimestamp
     }
   }`
-  const [graphData, loading, error] = useGraph(query, { chainName })
+  const [graphData, loading, error] = useGraph(query, {chainName})
 
 
   const data = useMemo(() => {
@@ -731,8 +736,8 @@ export function useFundingRateData({ from = FIRST_DATE_TS, to = NOW_TS, chainNam
 const MOVING_AVERAGE_DAYS = 7
 const MOVING_AVERAGE_PERIOD = 86400 * MOVING_AVERAGE_DAYS
 
-export function useVolumeData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum" } = {}) {
-	const PROPS = 'margin liquidation swap mint burn'.split(' ')
+export function useVolumeData({from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum"} = {}) {
+  const PROPS = 'margin liquidation swap mint burn'.split(' ')
   const timestampProp = chainName === "arbitrum" ? "id" : "timestamp"
   const query = `{
     volumeStats(
@@ -745,15 +750,15 @@ export function useVolumeData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "
       ${PROPS.join('\n')}
     }
   }`
-  const [graphData, loading, error] = useGraph(query, { chainName })
+  const [graphData, loading, error] = useGraph(query, {chainName})
 
   const data = useMemo(() => {
     if (!graphData) {
       return null
     }
 
-    let ret =  sortBy(graphData.volumeStats, timestampProp).map(item => {
-      const ret = { timestamp: item[timestampProp] };
+    let ret = sortBy(graphData.volumeStats, timestampProp).map(item => {
+      const ret = {timestamp: item[timestampProp]};
       let all = 0;
       PROPS.forEach(prop => {
         ret[prop] = item[prop] / 1e30
@@ -785,7 +790,7 @@ export function useVolumeData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "
   return [data, loading, error]
 }
 
-export function useFeesData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum" } = {}) {
+export function useFeesData({from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum"} = {}) {
   const PROPS = 'margin liquidation swap mint burn'.split(' ')
   const feesQuery = `{
     feeStats(
@@ -813,7 +818,7 @@ export function useFeesData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "ar
     }
 
     let chartData = sortBy(feesData.feeStats, 'id').map(item => {
-      const ret = { timestamp: item.timestamp || item.id };
+      const ret = {timestamp: item.timestamp || item.id};
 
       PROPS.forEach(prop => {
         if (item[prop]) {
@@ -847,7 +852,7 @@ export function useFeesData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "ar
           movingAverageAll
         }
         PROPS.forEach(prop => {
-           ret[prop] = sumBy(values, prop)
+          ret[prop] = sumBy(values, prop)
         })
         cumulativeByTs[timestamp] = cumulative
         return ret
@@ -859,10 +864,10 @@ export function useFeesData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "ar
   return [feesChartData, loading, error]
 }
 
-export function useAumPerformanceData({ from = FIRST_DATE_TS, to = NOW_TS, groupPeriod }) {
-  const [feesData, feesLoading] = useFeesData({ from, to, groupPeriod })
-  const [glpData, glpLoading] = useGlpData({ from, to, groupPeriod })
-  const [volumeData, volumeLoading] = useVolumeData({ from, to, groupPeriod })
+export function useAumPerformanceData({from = FIRST_DATE_TS, to = NOW_TS, groupPeriod}) {
+  const [feesData, feesLoading] = useFeesData({from, to, groupPeriod})
+  const [glpData, glpLoading] = useGlpData({from, to, groupPeriod})
+  const [volumeData, volumeLoading] = useVolumeData({from, to, groupPeriod})
 
   const dailyCoef = 86400 / groupPeriod
 
@@ -874,7 +879,7 @@ export function useAumPerformanceData({ from = FIRST_DATE_TS, to = NOW_TS, group
     const ret = feesData.map((feeItem, i) => {
       const glpItem = glpData[i]
       const volumeItem = volumeData[i]
-      let apr = (feeItem?.all && glpItem?.aum) ? feeItem.all /  glpItem.aum * 100 * 365 * dailyCoef : null
+      let apr = (feeItem?.all && glpItem?.aum) ? feeItem.all / glpItem.aum * 100 * 365 * dailyCoef : null
       if (apr > 10000) {
         apr = null
       }
@@ -899,7 +904,7 @@ export function useAumPerformanceData({ from = FIRST_DATE_TS, to = NOW_TS, group
   return [data, feesLoading || glpLoading || volumeLoading]
 }
 
-export function useGlpData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum" } = {}) {
+export function useGlpData({from = FIRST_DATE_TS, to = NOW_TS, chainName = "arbitrum"} = {}) {
   const timestampProp = chainName === 'arbitrum' ? 'id' : 'timestamp'
   const query = `{
     glpStats(
@@ -915,7 +920,7 @@ export function useGlpData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arb
       distributedEth
     }
   }`
-  let [data, loading, error] = useGraph(query, { chainName })
+  let [data, loading, error] = useGraph(query, {chainName})
 
   let cumulativeDistributedUsdPerGlp = 0
   let cumulativeDistributedEthPerGlp = 0
@@ -924,8 +929,8 @@ export function useGlpData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arb
       return null
     }
 
-    const getTimestamp = item => item.timestamp || parseInt(item[timestampProp])
-    
+    // const getTimestamp = item => item.timestamp || parseInt(item[timestampProp])
+
     let prevGlpSupply
     let prevAum
     return sortBy(data.glpStats, item => item[timestampProp]).filter(item => item[timestampProp] % 86400 === 0).reduce((memo, item) => {
@@ -964,7 +969,7 @@ export function useGlpData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arb
 
       return memo
     }, []).map(item => {
-      let { glpSupply, aum } = item
+      let {glpSupply, aum} = item
       if (!glpSupply) {
         glpSupply = prevGlpSupply
       }
@@ -985,10 +990,10 @@ export function useGlpData({ from = FIRST_DATE_TS, to = NOW_TS, chainName = "arb
   return [glpChartData, loading, error]
 }
 
-export function useGlpPerformanceData(glpData, feesData, { from = FIRST_DATE_TS, chainName = "arbitrum" } = {}) {
-  const [btcPrices] = useCoingeckoPrices('BTC', { from })
-  const [ethPrices] = useCoingeckoPrices('ETH', { from })
-  const [avaxPrices] = useCoingeckoPrices('AVAX', { from })
+export function useGlpPerformanceData(glpData, feesData, {from = FIRST_DATE_TS} = {}) {
+  const [btcPrices] = useCoingeckoPrices('BTC', {from})
+  const [ethPrices] = useCoingeckoPrices('ETH', {from})
+  const [avaxPrices] = useCoingeckoPrices('AVAX', {from})
 
   const glpPerformanceChartData = useMemo(() => {
     if (!btcPrices || !ethPrices || !avaxPrices || !glpData || !feesData) {
@@ -1023,7 +1028,7 @@ export function useGlpPerformanceData(glpData, feesData, { from = FIRST_DATE_TS,
 
     const ret = []
     let cumulativeFeesPerGlp = 0
-    let cumulativeEsgmxRewardsPerGlp = 0
+    // let cumulativeEsgmxRewardsPerGlp = 0
     let lastGlpPrice = 0
 
     let prevEthPrice = 3400
@@ -1052,7 +1057,7 @@ export function useGlpPerformanceData(glpData, feesData, { from = FIRST_DATE_TS,
         const collectedFeesPerGlp = dailyFees / glpSupply * GLP_REWARDS_SHARE
         cumulativeFeesPerGlp += collectedFeesPerGlp
 
-        cumulativeEsgmxRewardsPerGlp += glpPrice * 0.8 / 365
+        // cumulativeEsgmxRewardsPerGlp += glpPrice * 0.8 / 365
       }
 
       let glpPlusFees = glpPrice

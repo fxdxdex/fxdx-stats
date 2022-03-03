@@ -1,11 +1,11 @@
 import Logger from 'console-log-level'
-import { ethers } from 'ethers'
+import {ethers} from 'ethers'
 import strftime from 'strftime'
 import chalk from 'chalk'
 
-import { BSC, ARBITRUM } from './addresses'
+import {BSC, ARBITRUM} from './addresses'
 
-const { BigNumber } = ethers
+const {BigNumber} = ethers
 
 export const CHART_HEIGHT = 400
 export const YAXIS_WIDTH = 65
@@ -50,6 +50,7 @@ const levelColor = {
   'warn': 'orange',
   'info': 'greenBright'
 }
+
 export function getLogger(ns) {
   return Logger({
     level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
@@ -62,14 +63,14 @@ export function getLogger(ns) {
 
 const logger = getLogger('helpers')
 
-const numberFmt0 = Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
-const numberFmt1 = Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 1 })
-const numberFmt2 = Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })
-const currencyFmt0 = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })
-const currencyFmt1 = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 1 })
-const currencyFmt2 = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 })
+const numberFmt0 = Intl.NumberFormat('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})
+const numberFmt1 = Intl.NumberFormat('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 1})
+const numberFmt2 = Intl.NumberFormat('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2})
+const currencyFmt0 = Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0})
+const currencyFmt1 = Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 1})
+const currencyFmt2 = Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2})
 
-export function fillPeriods(arr, { period, from, to, interpolate = true, extrapolate = false }) {
+export function fillPeriods(arr, {period, from, to, interpolate = true, extrapolate = false}) {
   let i = 0
   let prevTimestamp = from ? from - period : arr[0].timestamp
   let prevPeriodStep = Math.floor(prevTimestamp / period)
@@ -84,9 +85,9 @@ export function fillPeriods(arr, { period, from, to, interpolate = true, extrapo
       const diff = periodStep - prevPeriodStep
       let j = 1
       while (j < diff) {
-        let newItem = { timestamp: (prevPeriodStep + j) * period }
+        let newItem = {timestamp: (prevPeriodStep + j) * period}
         if (interpolate) {
-          newItem = { ...prevItem, ...newItem }
+          newItem = {...prevItem, ...newItem}
         }
         ret.push(newItem)
         j++
@@ -101,9 +102,9 @@ export function fillPeriods(arr, { period, from, to, interpolate = true, extrapo
         const diff = lastPeriodStep - periodStep
         let j = 0
         while (j < diff) {
-          let newItem = { timestamp: (periodStep + j + 1) * period }
+          let newItem = {timestamp: (periodStep + j + 1) * period}
           if (extrapolate) {
-            newItem = { ...item, ...newItem }
+            newItem = {...item, ...newItem}
           }
           ret.push(newItem)
           j++
@@ -199,15 +200,15 @@ export const yaxisFormatterNumber = value => {
   return compactNumber(value)
 }
 
-export const yaxisFormatter = (value, ...args) => {
-  return formatNumber(value, { currency: true, compact: true })
+export const yaxisFormatter = (value) => {
+  return formatNumber(value, {currency: true, compact: true})
 }
 
-export const tooltipFormatterNumber = (value, name, item) => {
+export const tooltipFormatterNumber = (value) => {
   return formatNumber(value)
 }
 
-export const tooltipFormatterPercent = (value, name, item) => {
+export const tooltipFormatterPercent = (value) => {
   return value.toFixed(2) + '%'
 }
 
@@ -215,7 +216,7 @@ export const tooltipFormatter = (value, name, item) => {
   if (item && item.unit === '%') {
     return value.toFixed(2)
   }
-  return formatNumber(value, { currency: true })
+  return formatNumber(value, {currency: true})
 }
 
 export const tooltipLabelFormatterUnits = (label, args) => {
@@ -284,7 +285,7 @@ export async function getLatestReliableBlock() {
 }
 
 export async function getLatestReliableBlockNumber() {
-    return (await provider.getBlockNumber()) - 3
+  return (await provider.getBlockNumber()) - 3
 }
 
 export function getTransaction(hash) {
@@ -304,22 +305,23 @@ export function getBlocks(numbers) {
 }
 
 export function findNearest(arr, needle, getter = el => el) {
-	let prevEl
-	for (const el of arr) {
-		if (getter(el) > needle) {
-			if (prevEl && getter(el) - needle > needle - getter(prevEl)) {
-				return prevEl
-			} else {
-				return el
-			}
-		}
-		prevEl = el
-	}
-	return prevEl
+  let prevEl
+  for (const el of arr) {
+    if (getter(el) > needle) {
+      if (prevEl && getter(el) - needle > needle - getter(prevEl)) {
+        return prevEl
+      } else {
+        return el
+      }
+    }
+    prevEl = el
+  }
+  return prevEl
 }
 
 async function callWithRetry(func, args, maxTries = 10) {
   let i = 0
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
       return await func(...args)
@@ -332,12 +334,12 @@ async function callWithRetry(func, args, maxTries = 10) {
   }
 }
 
-export async function queryProviderLogs({ fromBlock, toBlock, address, backwards }) {
+export async function queryProviderLogs({fromBlock, toBlock, address, backwards}) {
   logger.info(`query logs fromBlock=%s toBlock=%s blocks length=%s backwards=%s`,
-  	fromBlock,
-  	toBlock,
-  	toBlock - fromBlock,
-  	backwards
+    fromBlock,
+    toBlock,
+    toBlock - fromBlock,
+    backwards
   )
   const allResult = []
   const MAX = 1000
@@ -346,15 +348,16 @@ export async function queryProviderLogs({ fromBlock, toBlock, address, backwards
   let chunkToBlock
 
   if (backwards) {
-  	chunkToBlock = toBlock
-  	chunkFromBlock = Math.max(fromBlock, toBlock - MAX)
+    chunkToBlock = toBlock
+    chunkFromBlock = Math.max(fromBlock, toBlock - MAX)
   } else {
-	  chunkFromBlock = fromBlock
-	  chunkToBlock = Math.min(toBlock, fromBlock + MAX)
+    chunkFromBlock = fromBlock
+    chunkToBlock = Math.min(toBlock, fromBlock + MAX)
   }
 
   let i = 0
-  while (true) {
+  // eslint-disable-next-line no-constant-condition
+  while (1) {
     logger.info(`requesting ${i} chunk ${chunkFromBlock}-${chunkToBlock}...`)
     let result = await callWithRetry(provider.getLogs.bind(provider), [{
       fromBlock: chunkFromBlock,
@@ -362,7 +365,7 @@ export async function queryProviderLogs({ fromBlock, toBlock, address, backwards
       address
     }])
     if (backwards) {
-    	result = result.reverse()
+      result = result.reverse()
     }
     allResult.push(...result)
     i++
@@ -377,11 +380,11 @@ export async function queryProviderLogs({ fromBlock, toBlock, address, backwards
     }
 
     if (backwards) {
-	    chunkToBlock = chunkFromBlock - 1
-	    chunkFromBlock = Math.max(fromBlock, chunkFromBlock - MAX)
+      chunkToBlock = chunkFromBlock - 1
+      chunkFromBlock = Math.max(fromBlock, chunkFromBlock - MAX)
     } else {
-	    chunkFromBlock = chunkToBlock + 1
-	    chunkToBlock = Math.min(toBlock, chunkToBlock + MAX)
+      chunkFromBlock = chunkToBlock + 1
+      chunkToBlock = Math.min(toBlock, chunkToBlock + MAX)
     }
   }
 

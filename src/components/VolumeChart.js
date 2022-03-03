@@ -1,6 +1,6 @@
+import React from 'react'
 import {
   Bar,
-  Label,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -18,13 +18,21 @@ import {
 
 export default function VolumeChart(props) {
   const {
+// eslint-disable-next-line react/prop-types
     data,
+// eslint-disable-next-line react/prop-types
     loading,
+// eslint-disable-next-line react/prop-types
     chartHeight,
+// eslint-disable-next-line react/prop-types
     yaxisWidth,
+// eslint-disable-next-line react/prop-types
     xaxisTickFormatter,
+// eslint-disable-next-line react/prop-types
     yaxisTickFormatter,
+// eslint-disable-next-line react/prop-types
     tooltipFormatter,
+// eslint-disable-next-line react/prop-types
     tooltipLabelFormatter
   } = props
 

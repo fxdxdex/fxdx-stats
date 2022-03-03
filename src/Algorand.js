@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import * as ethers from 'ethers'
 import moment from 'moment'
 import { RiLoader5Fill } from 'react-icons/ri'
 import cx from "classnames";
@@ -14,35 +13,25 @@ import {
   tooltipFormatterNumber,
   tooltipFormatterPercent,
   formatNumber,
-  tsToIsoDate,
   CHART_HEIGHT,
   YAXIS_WIDTH,
   COLORS,
-  GREEN,
-  RED
 } from './helpers'
 import './Home.css';
 
 import {
   LineChart,
-  BarChart,
   Line,
   Bar,
-  Label,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  LabelList,
-  ReferenceLine,
   Area,
-  AreaChart,
   ComposedChart,
-  Cell,
-  PieChart,
-  Pie
+  Cell
 } from 'recharts';
 
 import ChartWrapper from './components/ChartWrapper'
@@ -51,13 +40,11 @@ import FeesChart from './components/FeesChart'
 import GenericChart from './components/GenericChart'
 
 import {
-  useVolumeData,
   useTotalVolumeFromServer,
   useVolumeDataFromServer,
   useFeesData,
   useGlpData,
   useAumPerformanceData,
-  useCoingeckoPrices,
   useGlpPerformanceData,
   useTradersData,
   useSwapSources,
@@ -67,17 +54,17 @@ import {
   useLastBlock
 } from './dataProvider'
 
-const { BigNumber } = ethers
-const { formatUnits} = ethers.utils
 const NOW = Math.floor(Date.now() / 1000)
 
 function Algorand(props) {
   const DEFAULT_GROUP_PERIOD = 86400
+  // eslint-disable-next-line no-unused-vars
   const [groupPeriod, setGroupPeriod] = useState(DEFAULT_GROUP_PERIOD)
 
   const [fromValue, setFromValue] = useState()
   const [toValue, setToValue] = useState()
 
+  // eslint-disable-next-line react/prop-types
   const { mode } = props
 
   const setDateRange = useCallback(range => {
@@ -121,6 +108,7 @@ function Algorand(props) {
   }, [glpData])
 
   const [aumPerformanceData, aumPerformanceLoading] = useAumPerformanceData(params)
+  // eslint-disable-next-line no-unused-vars
   const [glpPerformanceData, glpPerformanceLoading] = useGlpPerformanceData(glpData, feesData, params)
 
   const [tradersData, tradersLoading] = useTradersData(params)
@@ -174,7 +162,7 @@ function Algorand(props) {
         <p className={cx('page-description', { warning: isObsolete })} style={{ marginTop: '-1rem' }}>
           {isObsolete && "Data is obsolete. "}
           Updated {moment(lastSubgraphBlock.timestamp * 1000).fromNow()}
-          &nbsp;at block <a target="_blank" href={`https://arbiscan.io/block/${lastSubgraphBlock.number}`}>{lastSubgraphBlock.number}</a>
+          &nbsp;at block <a rel="noreferrer" target="_blank" href={`https://arbiscan.io/block/${lastSubgraphBlock.number}`}>{lastSubgraphBlock.number}</a>
         </p>
       }
       {showForm &&
@@ -184,8 +172,8 @@ function Algorand(props) {
             <input type="date" value={fromValue} onChange={evt => setFromValue(evt.target.value)} />
             &nbsp;—&nbsp;
             <input type="date" value={toValue} onChange={evt => setToValue(evt.target.value)} />
-            <button onClick={evt => setDateRange(86400 * 29)}>30 days</button>
-            <button onClick={evt => setDateRange(86400 * 6)}>7 days</button>
+            <button onClick={() => setDateRange(86400 * 29)}>30 days</button>
+            <button onClick={() => setDateRange(86400 * 6)}>7 days</button>
           </p>
         </div>
       }
@@ -306,8 +294,8 @@ function Algorand(props) {
                 <Line dot={false} isAnimationActive={false} type="monotone" unit="%" strokeWidth={2} dataKey="performanceSyntheticCollectedFees" name="% Index (w/ fees)" stroke={COLORS[0]} />
 
                 <Line isAnimationActive={false} type="monotone" unit="$" strokeWidth={1} yAxisId="right" dot={false} dataKey="syntheticPrice" name="Index Price" stroke={COLORS[2]} />
-                <Line isAnimationActive={false} type="monotone" unit="$" strokeWidth={1} yAxisId="right" dot={false} dataKey="glpPrice" name="Glp Price" stroke={COLORS[1]} strokeWidth={1} />
-                <Line isAnimationActive={false} type="monotone" unit="$" strokeWidth={1} yAxisId="right" dot={false} dataKey="glpPlusFees" name="Glp w/ fees" stroke={COLORS[3]} strokeWidth={1} />
+                <Line isAnimationActive={false} type="monotone" unit="$" strokeWidth={1} yAxisId="right" dot={false} dataKey="glpPrice" name="Glp Price" stroke={COLORS[1]} />
+                <Line isAnimationActive={false} type="monotone" unit="$" strokeWidth={1} yAxisId="right" dot={false} dataKey="glpPlusFees" name="Glp w/ fees" stroke={COLORS[3]}  />
                 <Line isAnimationActive={false} type="monotone" unit="$" strokeWidth={1} yAxisId="right" dot={false} dataKey="lpBtcPrice" name="LP BTC-USDC" stroke={COLORS[2]} />
                 <Line isAnimationActive={false} type="monotone" unit="$" strokeWidth={1} yAxisId="right" dot={false} dataKey="lpEthPrice" name="LP ETH-USDC" stroke={COLORS[4]} />
               </LineChart>
