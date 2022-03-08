@@ -25,39 +25,22 @@ import ChartWrapper from './ChartWrapper'
 
 export default function GenericChart(props) {
   const {
-// eslint-disable-next-line react/prop-types
     loading,
-// eslint-disable-next-line react/prop-types
     title,
-// eslint-disable-next-line react/prop-types
     data,
-// eslint-disable-next-line react/prop-types
     description,
-// eslint-disable-next-line react/prop-types
     height = CHART_HEIGHT,
-// eslint-disable-next-line react/prop-types
     yaxisDataKey = 'all',
-// eslint-disable-next-line react/prop-types
     yaxisTickFormatter = yaxisFormatter,
-// eslint-disable-next-line react/prop-types
     yaxisDomain,
-// eslint-disable-next-line react/prop-types
     xaxisDataKey = 'timestamp',
-// eslint-disable-next-line react/prop-types
     xaxisTickFormatter = tooltipLabelFormatter_,
-// eslint-disable-next-line react/prop-types
     tooltipFormatter = tooltipFormatter_,
-// eslint-disable-next-line react/prop-types
     tooltipLabelFormatter = tooltipLabelFormatter_,
-// eslint-disable-next-line react/prop-types
     items,
-// eslint-disable-next-line react/prop-types
     type,
-// eslint-disable-next-line react/prop-types
     syncId,
-// eslint-disable-next-line react/prop-types
     children,
-// eslint-disable-next-line react/prop-types
     rightYaxisDataKey,
   } = props
 
@@ -87,11 +70,9 @@ export default function GenericChart(props) {
     if (item.type === 'Line' || type === 'Line') {
       return <Line {...props} isAnimationActive={false} />
     }
-    // eslint-disable-next-line react/jsx-key
     return <Bar {...props} isAnimationActive={false} />
   })
 
-  // eslint-disable-next-line react/prop-types
   const csvFields = items.map(item => ({ key: item.key, name: item.name }))
 
   return <ChartWrapper title={title} loading={loading} data={data} csvFields={csvFields}>

@@ -1,18 +1,14 @@
 import React from "react";
 import {RiLoader5Fill} from 'react-icons/ri'
 import CsvLink from './CsvLink'
+import PropTypes from 'prop-types'
 
 export default function ChartWrapper(props) {
   const {
-// eslint-disable-next-line react/prop-types
     title,
-// eslint-disable-next-line react/prop-types
     loading,
-// eslint-disable-next-line react/prop-types
     csvFields,
-// eslint-disable-next-line react/prop-types
     data,
-// eslint-disable-next-line react/prop-types
     children
   } = props
   return <>
@@ -27,4 +23,11 @@ export default function ChartWrapper(props) {
     {loading && <RiLoader5Fill size="3em" className="loader"/>}
     {children}
   </>
+}
+
+ChartWrapper.propTypes  = {
+  title: PropTypes.string,
+  loading: PropTypes.bool,
+  csvFields: PropTypes.array,
+  data: PropTypes.object
 }

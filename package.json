@@ -31,6 +31,7 @@
     "moment": "^2.29.1",
     "object-sizeof": "^1.6.1",
     "path": "^0.12.7",
+    "prop-types": "^15.8.1",
     "razzle-dev-utils": "^4.2.14",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -55,11 +56,33 @@
     ]
   },
   "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "jsx-a11y/anchor-is-valid": "off"
+    "env": {
+      "browser": true,
+      "node": true,
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react"
+    ],
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
     }
   },
+  "eslintIgnore": [
+    "*"
+  ],
   "devDependencies": {
     "eslint-plugin-disable": "^2.0.3"
   }
