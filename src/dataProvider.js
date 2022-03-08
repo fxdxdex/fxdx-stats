@@ -154,7 +154,7 @@ function getImpermanentLoss(change) {
 }
 
 function getChainSubgraph(chainName) {
-  return chainName === "arbitrum" ? "gmx-io/gmx-stats" : "gmx-io/gmx-avalanche-stats"
+  return chainName === "arbitrum" ? "gmx-io/gmx-stats" : "lovetrading10/fxdxsubgraph12"
 }
 
 export function useGraph(querySource, {subgraph = null, subgraphUrl = null, chainName = "arbitrum"} = {}) {
@@ -209,7 +209,7 @@ export function useGambitVolumeData({from, to}) {
       burn
     }
   }`, {
-    subgraph: 'gmx-io/gmx-bsc-stats'
+    subgraph: 'lovetrading10/fxdxsubgraph12' //'gmx-io/gmx-bsc-stats'
   })
 
   let data
@@ -256,7 +256,7 @@ export function useGambitFeesData({from, to}) {
       burnCumulative
     }
   }`, {
-    subgraph: 'gmx-io/gmx-bsc-stats'
+    subgraph: 'lovetrading10/fxdxsubgraph12' //'gmx-io/gmx-bsc-stats'
   })
 
   let data
